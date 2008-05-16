@@ -1,7 +1,7 @@
 # $Id$
 
 require File.expand_path(
-    File.join(File.dirname(__FILE__), %w[.. lib rbVimeo]))
+    File.join(File.dirname(__FILE__), %w[.. lib rb_vimeo]))
 
 Spec::Runner.configure do |config|
   # == Mock Framework

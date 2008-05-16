@@ -5,17 +5,18 @@
 require 'digest/md5'
 require 'net/http'
 require 'rexml/document'
-require File.join(File.dirname(__FILE__), %w[Video])
+require File.join(File.dirname(__FILE__), %w[video])
 
 module RBVIMEO
   class Vimeo
     attr_accessor :api_key, :api_secret
-  
-    @@API_REST_URL  = "http://www.vimeo.com/api/rest"
+
+    @@API_REST_URL   = "http://www.vimeo.com/api/rest"
     @@API_AUTH_URL   = "http://www.vimeo.com/services/auth/"
     @@API_UPLOAD_URL = "http://www.vimeo.com/services/upload/"
+
     # api_key and api_secret should both be generated on www.vimeo.com
-    def initialize api_key, api_secret
+    def initialize(api_key, api_secret)
       @api_key = api_key
       @api_secret = api_secret
     end
@@ -23,7 +24,7 @@ module RBVIMEO
     # @vimeo.generate_url({"method" => "vimeo.videos.getInfo", "read",
     #   "video_id" => "339189", "api_key" => @vimeo.api_key})
     # This example returns a url to the xml for the Vimeo video with id 339189
-    def generate_url parameters, permissions = nil
+    def generate_url(parameters, permissions = nil)
       url = @@API_REST_URL + "?api_key=" + @api_key
       params = parameters.sort
       params.each do |param|
@@ -32,9 +33,9 @@ module RBVIMEO
       url += "&api_sig=" + generate_signature(parameters)
       return url
     end
-    
+
     # parameters is a hash 
-    def generate_signature parameters
+    def generate_signature(parameters)
       temp = ''
       params = parameters.sort
       params.each do |array|
@@ -43,15 +44,15 @@ module RBVIMEO
       signature = @api_secret + temp
       Digest::MD5.hexdigest(signature)
     end
-    
+
     # Provides easier access to RBVIMEO::Video
     # video = @vimeo.video 339189
-    def video id, xml=nil
+    def video(id, xml = nil)
       vid = Video.new(id, self, xml)
       return nil if vid.id == -1
       return vid
     end
-    
+
     # Provides easier access to RBVIMEO::User
     # user = @vimeo.user
     def user

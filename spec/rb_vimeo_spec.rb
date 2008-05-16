@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
-require File.join(File.dirname(__FILE__), "../lib/rbVimeo.rb")
+require File.join(File.dirname(__FILE__), "../lib/rb_vimeo.rb")
 require "yaml"
 
 include RBVIMEO
@@ -20,6 +20,7 @@ describe Vimeo do
   end
   
   it "should generate a signature" do
+    @vimeo.should_receive(:generate_signature).with(@params).and_return("09cc6d8b963c73caf647e436b2147810")
     @vimeo.generate_signature(@params).should eql("09cc6d8b963c73caf647e436b2147810")
   end
   
